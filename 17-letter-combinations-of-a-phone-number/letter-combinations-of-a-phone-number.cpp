@@ -1,35 +1,29 @@
 class Solution {
-private:
-    void solve(vector<string>& ans, string output, int index, string mapping[], string digits)
-    {
-        if(index >= digits.length()){
-            ans.push_back(output);
-            return;
-        }
+ public:
+  vector<string> letterCombinations(string digits) {
+    if (digits.empty())
+      return {};
 
-        int number = digits[index] - '0';       //to find the number - 2, 3 in 23
-        string value = mapping[number];
+    vector<string> ans;
 
-        for(int i = 0; i<value.length(); i++)
-        {
-            output.push_back(value[i]);
-            solve(ans, output, index+1, mapping, digits);
-            output.pop_back();
-        }
+    dfs(digits, 0, "", ans);
+    return ans;
+  }
+
+ private:
+  const vector<string> digitToLetters{"",    "",    "abc",  "def", "ghi",
+                                      "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+  void dfs(const string& digits, int i, string&& path, vector<string>& ans) {
+    if (i == digits.length()) {
+      ans.push_back(path);
+      return;
     }
 
-public:
-    vector<string> letterCombinations(string digits) {
-        vector<string> ans;
-        
-        if(digits.length()==0)
-            return ans;
-        int index = 0;
-        string output = "";
-
-        string mapping[10] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
-
-        solve(ans, output, index, mapping, digits);
-        return ans;
+    for (const char letter : digitToLetters[digits[i] - '0']) {
+      path.push_back(letter);
+      dfs(digits, i + 1, move(path), ans);
+      path.pop_back();
     }
+  }
 };
