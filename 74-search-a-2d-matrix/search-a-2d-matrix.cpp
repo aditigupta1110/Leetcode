@@ -1,26 +1,23 @@
 class Solution {
- public:
-  bool searchMatrix(vector<vector<int>>& matrix, int target) {
-    if (matrix.empty())
-      return false;
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int row = matrix.size(), col = matrix[0].size();
+        int s = 0, e = row*col-1;
+        int mid = s + (e-s)/2;
+        
 
-    const int m = matrix.size();
-    const int n = matrix[0].size();
-    int l = 0;
-    int r = m * n;
-
-    while (l < r) {
-      const int mid = (l + r) / 2;
-      const int i = mid / n;
-      const int j = mid % n;
-      if (matrix[i][j] == target)
-        return true;
-      if (matrix[i][j] < target)
-        l = mid + 1;
-      else
-        r = mid;
+        while(s<=e)
+        {   int element = matrix[mid/col][mid%col];
+            if(target == element)
+                return 1;
+            else if(target<element){
+                e = mid-1;
+            }
+            else{
+                s = mid+1;
+            }
+            mid = s + (e-s)/2;
+        }
+        return 0;
     }
-
-    return false;
-  }
 };
